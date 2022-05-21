@@ -1,0 +1,40 @@
+.shift_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.shift {
+  display: flex;
+  align-items: center;
+  color: black;
+  padding-right: 30px;
+  position: relative; 
+  margin: 0 10px 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  padding-right: 30px;
+}
+
+.selectWrapper + .selectWrapper {margin-left: 20px;}
+
+.shift_remove {
+  padding: 8px;
+  position: absolute;
+  top: 4px; right: 4px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.shift_remove:hover {
+  transform: rotate(360deg);
+}
+
+.shift_remove span {
+  height: 2px;
+  width: 100%;
+  position: absolute; left: 50%; top: 50%;
+  background: black;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.shift_remove span:first-child {transform: translate(-50%, -50%) rotate(-45deg);}

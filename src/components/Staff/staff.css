@@ -1,0 +1,75 @@
+.staff_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.staff {
+  display: flex;
+  align-items: center;
+  border: 2px solid black;
+  color: black;
+  padding-right: 30px;
+  position: relative; 
+  margin: 0 10px 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.staff-dark {color: white;}
+
+.staff * {color: inherit;}
+
+.staff input {
+  height: 40px;
+  appearance: none;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding-left: 6px;
+  cursor: pointer;
+}
+.staff-dark input::placeholder {color: lightgray;}
+
+.staff_remove {
+  padding: 8px;
+  position: absolute;
+  top: 4px; right: 4px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.staff_remove:hover {
+  transform: rotate(360deg);
+}
+
+.staff_remove span {
+  height: 2px;
+  width: 100%;
+  position: absolute; left: 50%; top: 50%;
+  background: black;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.staff-dark .staff_remove span {background: white;}
+.staff_remove span:first-child {transform: translate(-50%, -50%) rotate(-45deg);}
+
+.staff_color {
+  position: relative;
+  margin-left: 10px;
+}
+
+.staff_color .colorpicker-toggle {
+  height: 30px; width: 30px;
+  background: url(../../../public/colorpicker.png) center no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.staff_color .colorpicker-toggle:hover {
+  transform: rotate(360deg);
+}
+
+.chrome-picker {
+  position: absolute;
+  top: 100%; left: -96px;
+  z-index: 2;
+}
