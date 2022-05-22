@@ -8,25 +8,21 @@ import Staff, { IStaff } from "../Staff/Staff";
 
 moment.locale('el');
 
-export type IFilledDate = Record<string, {shift: number, staff: number}>;
+export type IFilledDate = Record<string, {staff: string}>;
 
 interface IProps {
   shifts: IShift[];
   staff: IStaff[];
   dateRange: {start?: Date, end?: Date};
-  chosenStaff?: number;
+  chosenStaff?: string;
   calendar: IFilledDate;
   onUpdateCalendar: (value: IFilledDate) => void;
+  defaultProgram: IFilledDate[][];
+  onUpdateDefaultProgram: (value: IFilledDate[][]) => void;
 }
 
-const days = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]
-
-const initCalendar = [
-
-]
-
 // Start should be monday and end should be sunday
-const Calendar = ({calendar, shifts, staff, dateRange, chosenStaff, onUpdateCalendar}: IProps) => {
+const Calendar = ({defaultProgram, onUpdateDefaultProgram, calendar, shifts, staff, dateRange, chosenStaff, onUpdateCalendar}: IProps) => {
   const [visibleDates, setVisibleDates] = useState<{start?: moment.Moment, end?: moment.Moment}>({});
   const [numberOfVisibleDays, setNumberOfVisibleDays] = useState(7);
 
@@ -58,31 +54,50 @@ const Calendar = ({calendar, shifts, staff, dateRange, chosenStaff, onUpdateCale
         delete temp[key];
       }
     }
-    else temp[key] = {shift, staff: chosenStaff};
+    else temp[key] = {staff: chosenStaff};
     onUpdateCalendar(temp);
     return undefined;
   }, [chosenStaff, calendar, onUpdateCalendar])
 
   const findName = useCallback((shift: number, date: string) => {
       const chosenCalendarEntry = calendar[`${date}_${shift}`];
-      let chosenStaff = undefined;
-      if (chosenCalendarEntry) chosenStaff = staff[chosenCalendarEntry.staff].name;
-      return chosenStaff;
+      let name = undefined;
+      if (chosenCalendarEntry) name = staff.find(x => x.id === chosenCalendarEntry.staff)?.name;
+      return name;
   }, [calendar, staff])
 
   const findColor = useCallback((shift: number, date: string, ) => {
       const chosenCalendarEntry = calendar[`${date}_${shift}`];
       let color = undefined;
-      if (chosenCalendarEntry) color = staff[chosenCalendarEntry.staff].color;
+      if (chosenCalendarEntry) color = staff.find(x => x.id === chosenCalendarEntry.staff)?.color;
       return color;
   }, [calendar, staff])
 
   const findTextColor = useCallback((shift: number, date: string, ) => {
     const chosenCalendarEntry = calendar[`${date}_${shift}`];
     let color = undefined;
-    if (chosenCalendarEntry) color = staff[chosenCalendarEntry.staff].textColor;
+    if (chosenCalendarEntry) color = staff.find(x => x.id === chosenCalendarEntry.staff)?.textColor;
     return color || 'black';
 }, [calendar, staff])
+console.log(calendar);
+
+const saveBasic = useCallback(() => {
+  // const tempDefaultProgram: IFilledDate[][] = [];
+  // for (let i = 0; i < 7; i++) {
+  //   const entry: IFilledDate[] = []
+  //   for (const shift of shifts) {
+  //     const key = visibleDates.start?.clone().add(i, 'days').toISOString() + '_' + shift;
+  //     if (key in calendar) {
+
+  //     }
+  //   }
+  // }
+  
+  // const temp = ;
+  // // visibleDates.start?.clone().add(index2, 'days').toISOString()
+  // onUpdateDefaultProgram()
+  return undefined;
+}, [calendar, visibleDates, shifts, onUpdateDefaultProgram])
 
   // initialize date
   useEffect(() => {
@@ -112,6 +127,7 @@ const Calendar = ({calendar, shifts, staff, dateRange, chosenStaff, onUpdateCale
           disabled={visibleDates.end?.isSameOrAfter(moment(dateRange.end))}
           onClick={changeVisibleDates('add', numberOfVisibleDays)}
           >next</button>
+          <button className="btn saveBasic" onClick={saveBasic}>Αποθήκευση ως βασικό</button>
         </div>
 
         <div className="calendar">

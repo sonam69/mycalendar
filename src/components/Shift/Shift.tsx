@@ -1,10 +1,12 @@
 import moment from "moment";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Select, { ActionMeta, GroupBase, SingleValue } from 'react-select';
+import { uid } from 'uid';
 
 import './shift.css';
 
 export interface IShift {
+  id: string;
   from: string; 
   to: string;
 }
@@ -73,10 +75,11 @@ const Shift = ({shifts, onUpdate}: IProps) => {
   const [error, setError] = useState("")
 
   const addShift = useCallback(() => {
-    onUpdate([...shifts, {from: "" , to: ""}])
+    onUpdate([...shifts, {id: uid(), from: "" , to: ""}])
   }, [onUpdate, shifts])
 
-  const deleteShift = useCallback((index: number) => () => {
+  const deleteShift = useCallback((id: string) => () => {
+    const index = shifts.findIndex(x => x.id === id);
     if (error && !shiftsOverlap(shifts.splice(index, 1))) setError("");
     const temp = [...shifts];
     temp.splice(index, 1);
@@ -84,9 +87,11 @@ const Shift = ({shifts, onUpdate}: IProps) => {
   }, [error, onUpdate, shifts])
 
 
-  const updateShift = useCallback((index: number, fromOrTo: keyof IShift) => (value: SingleValue<ISelectOption>) => {
+  const updateShift = useCallback((id: string, fromOrTo: keyof IShift) => (value: SingleValue<ISelectOption>) => {
     const shiftsClone = shifts.map(x => { return {...x}});
-    const targetShift = shiftsClone[index];
+    // const targetShift = shiftsClone[index];
+    const targetShift = shiftsClone.find(x => x.id === id);
+    if (!targetShift) return;
     targetShift[fromOrTo] = value?.label as string;
 
     if (shiftsOverlap(shiftsClone)){
@@ -96,9 +101,9 @@ const Shift = ({shifts, onUpdate}: IProps) => {
 
     setError("");
 
-    const temp = [...shifts];
-    temp[index][fromOrTo] = value?.label as string;
-    onUpdate(temp);
+    // const temp = [...shifts];
+    // temp[index][fromOrTo] = value?.label as string;
+    onUpdate(shiftsClone);
   }, [shifts, onUpdate])
 
 
@@ -114,7 +119,7 @@ const Shift = ({shifts, onUpdate}: IProps) => {
             <Select 
               options={timeOptions} 
               value={timeOptions.find(x => x.label === shift.from) || {label: '00:00', value: '00:00'}} 
-              onChange={updateShift(index, "from")}
+              onChange={updateShift(shift.id, "from")}
               placeholder="Time"
             />
           </div>
@@ -124,11 +129,11 @@ const Shift = ({shifts, onUpdate}: IProps) => {
               options={timeOptions}
               value={timeOptions.find(x => x.label === shift.to) || {label: '00:00', value: '00:00'}} 
               // value={{label: '10:00', value: '10:00'}} 
-              onChange={updateShift(index, "to")}
+              onChange={updateShift(shift.id, "to")}
               placeholder="Time"
             />
           </div>
-          <div className="shift_remove" onClick={deleteShift(index)}>
+          <div className="shift_remove" onClick={deleteShift(shift.id)}>
             <span></span><span></span>
           </div>
         </div>

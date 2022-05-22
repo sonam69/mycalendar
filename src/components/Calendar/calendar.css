@@ -49,3 +49,13 @@
   height: 100%;
   width: 200px;
 }
+
+.date_pagination {
+  position: relative;
+}
+
+.saveBasic {
+  position: absolute;
+  right: 0;
+  top: -10px;
+}

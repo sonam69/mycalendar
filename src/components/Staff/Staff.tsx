@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 // import InputColor, { Color } from 'react-input-color';
 import { ChromePicker, ColorResult } from 'react-color'
-import { convertCompilerOptionsFromJson } from "typescript";
 import './staff.css';
+import { uid } from 'uid';
 
 export interface IStaff{
+  id: string;
   name: string; 
   color: React.CSSProperties['color'];
   textColor?: "white" | "black"
@@ -13,8 +14,8 @@ export interface IStaff{
 interface IProps {
   staff: IStaff[],
   onUpdate: (value: IStaff[]) => void;
-  chosenStaff?: number;
-  setChosenStaff: (value?: number) => void;
+  chosenStaff?: string;
+  setChosenStaff: (value?: string) => void;
 }
 
 function isLight(color: React.CSSProperties['color']): boolean {
@@ -40,24 +41,27 @@ const Staff = ({staff, onUpdate, chosenStaff, setChosenStaff}: IProps) => {
     else {
       setError("")
     }
-    onUpdate([...staff, {name: "", color: ""}])
+    onUpdate([...staff, {id: uid(), name: "", color: ""}])
   }, [onUpdate, staff])
 
-  const deleteStaff = useCallback((index: number) => () => {
+  const deleteStaff = useCallback((id: string) => () => {
     if (error) setError("");
+    const index = staff.findIndex(x => x.id === id);
     const temp = [...staff];
     temp.splice(index, 1);
     onUpdate(temp);
   }, [error, onUpdate, staff])
   
-  const updateStaffColor = useCallback( (index: number) => (value: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateStaffColor = useCallback( (id: string) => (value: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => {
+    const index = staff.findIndex(x => x.id === id);
     const temp = [...staff];
     temp[index].color = value.hex;
     temp[index].textColor = isLight(value.hex) ? 'black' : 'white';
     onUpdate(temp);
   }, [onUpdate, staff])
 
-  const updateStaffName = useCallback((index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateStaffName = useCallback((id: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const index = staff.findIndex(x => x.id === id);
     const value =  e.target.value;
     if (error && value) setError("");
 
@@ -70,9 +74,10 @@ const Staff = ({staff, onUpdate, chosenStaff, setChosenStaff}: IProps) => {
     setVisiblePicker((prevState) => prevState === index ? undefined : index);
   }, [])
 
-  const onChooseStaff = useCallback((index: number) => () => {
+  const onChooseStaff = useCallback((id: string) => () => {
+    const index = staff.findIndex(x => x.id === id);
     if (!staff[index].name) return
-    setChosenStaff(chosenStaff === index ? undefined : index);
+    setChosenStaff(chosenStaff === id ? undefined : id);
   }, [chosenStaff, setChosenStaff, staff])
 
   useEffect(() => {
@@ -95,22 +100,22 @@ const Staff = ({staff, onUpdate, chosenStaff, setChosenStaff}: IProps) => {
         <div 
           className={`staff ${isLight(staff.color) ? "" : "staff-dark"}`}
           key={index}
-          onClick={onChooseStaff(index)}
-          style={{background: staff.color, borderColor: chosenStaff === index ? 'green' : ''}}
+          onClick={onChooseStaff(staff.id)}
+          style={{background: staff.color, borderColor: chosenStaff === staff.id ? 'green' : ''}}
         >
           <input 
           name="name" 
           placeholder="Insert Name" 
           value={staff.name} 
-          onChange={updateStaffName(index)} 
+          onChange={updateStaffName(staff.id)} 
           spellCheck={false}
           autoComplete="off"
           />
           <div className="staff_color">
               <div className="colorpicker-toggle" onClick={onTogglePicker(index)}></div>
-              {visiblePicker === index && <ChromePicker  onChange={updateStaffColor(index)} color={staff.color} />}
+              {visiblePicker === index && <ChromePicker  onChange={updateStaffColor(staff.id)} color={staff.color} />}
           </div>
-          <div className="staff_remove" onClick={deleteStaff(index)}>
+          <div className="staff_remove" onClick={deleteStaff(staff.id)}>
             <span></span><span></span>
           </div>
         </div>

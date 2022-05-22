@@ -1,21 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import InputColor, { Color } from 'react-input-color';
+import React, { useCallback, useEffect, useState } from "react";
 import Calendar, { IFilledDate } from "./Calendar/Calendar";
 import Shift, { IShift } from "./Shift/Shift";
 import Staff, { IStaff } from "./Staff/Staff";
 import DatePicker from 'react-datepicker';
-import moment from "moment";
 
-const initCalendar = [
-
-]
-
+// TODO ISNTEAF OF USING INDEXES TO FIND SHIFT AND STAFF USE SOME UID OR SMTHING
 const Program = () => {
   const [shifts, setShifts] = useState<IShift[]>([]);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [dateRange, setDateRange] = useState<{start?: Date, end?: Date}>({});
-  const [chosenStaff, setChosenStaff] = useState<number>();
+  const [chosenStaff, setChosenStaff] = useState<string>();
   const [calendar, setCalendar] = useState<IFilledDate>({});
+  const [defaultProgram, setDefaultProgram] = useState<IFilledDate[][]>([]);
 
   const onUpdateShift = useCallback((value: IShift[]) => {
     setShifts(value);
@@ -25,7 +21,7 @@ const Program = () => {
     setStaff(value);
   }, [])
 
-  const onUpdateChosenStaff = useCallback((value?: number) => {
+  const onUpdateChosenStaff = useCallback((value?: string) => {
     setChosenStaff(value);
   }, [])
 
@@ -37,6 +33,10 @@ const Program = () => {
     setCalendar(value);
   }, [])
 
+  const onUpdateDefaultProgram = useCallback((value: IFilledDate[][]) => {
+    setDefaultProgram(value);
+  }, [])
+
   const onSaveToLocalStorage = useCallback(() => {
       localStorage.setItem('shifts', JSON.stringify(shifts));
       localStorage.setItem('staff', JSON.stringify(staff));
@@ -44,17 +44,20 @@ const Program = () => {
         start: dateRange.start ? dateRange.start.toISOString()  : null,
         end: dateRange.end ? dateRange.end.toISOString()  : null
       }));
-      localStorage.setItem('dateRange', JSON.stringify(calendar));
-  }, [shifts, staff, dateRange, calendar])
+      localStorage.setItem('calendar', JSON.stringify(calendar));
+      localStorage.setItem('defaultProgram', JSON.stringify(defaultProgram));
+      console.log(JSON.stringify(calendar));
+  }, [shifts, staff, dateRange, calendar, defaultProgram])
 
   useEffect(() => {
     const storedShifts = localStorage.getItem('shifts');
     const storedStaff = localStorage.getItem('staff');
     const storedDateRange = localStorage.getItem('dateRange');
     const storedCalendar = localStorage.getItem('calendar');
+    const storedDefaultProgram = localStorage.getItem('defaultProgram');
     if (storedShifts) setShifts(JSON.parse(storedShifts))
     if (storedStaff) setStaff(JSON.parse(storedStaff))
-    if (storedDateRange) {
+    if (storedDateRange && storedDateRange.length > 2) {
       const dates = JSON.parse(storedDateRange);
       setDateRange({
         start: new Date(dates.start),
@@ -62,7 +65,11 @@ const Program = () => {
       })
     }
     if (storedCalendar) setCalendar(JSON.parse(storedCalendar));
+    if (storedDefaultProgram) setDefaultProgram(JSON.parse(storedDefaultProgram));
   }, [])
+
+  console.log('start ', dateRange.start);
+  console.log('end ', dateRange.end);
 
   return (
     <>
@@ -77,7 +84,7 @@ const Program = () => {
       selectsRange
       inline
     />
-      <Calendar calendar={calendar} onUpdateCalendar={onUpdateCalendar} shifts={shifts} staff={staff} dateRange={dateRange} chosenStaff={chosenStaff}/>
+      <Calendar defaultProgram={defaultProgram} onUpdateDefaultProgram={onUpdateDefaultProgram} calendar={calendar} onUpdateCalendar={onUpdateCalendar} shifts={shifts} staff={staff} dateRange={dateRange} chosenStaff={chosenStaff}/>
     </>
   )
 }
