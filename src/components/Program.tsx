@@ -13,8 +13,6 @@ const Program = () => {
   const [calendar, setCalendar] = useState<IFilledDate>({});
   const [defaultProgram, setDefaultProgram] = useState<IDefaultProgram>([]);
 
-  console.log({shifts, staff, dateRange, calendar});
-
   const onUpdateShift = useCallback((value: IShift[]) => {
     setShifts(value);
   }, [])
@@ -77,10 +75,13 @@ const Program = () => {
 
   console.log('datrange = ', dateRange);
 
+
+
   return (
     <>
-      <button className="btn" onClick={onSaveToLocalStorage} style={{position: "fixed", right: '15px', top:'30px'}}>Save to local storage</button>
-      <button className="btn" onClick={() => window.print()} style={{position: "fixed", right: '15px', top:'80px'}}>Print</button>
+      <button className="btn" onClick={onSaveToLocalStorage} style={{position: "fixed", right: '15px', top:'30px'}} title='Save to local storage'>Αποθήκευση</button>
+      <button className="btn" onClick={() => {document.body.classList.remove('nodates'); window.print();}} style={{position: "fixed", right: '15px', top:'80px'}}>Εκτύπωση</button>
+      <button className="btn" onClick={() => {document.body.classList.add('nodates');window.print()}} style={{position: "fixed", zIndex: 5, right: '15px', top:'130px'}}>Εκτύπωση χωρίς ημερομηνίες</button>
       <Shift onUpdate={onUpdateShift} shifts={shifts}/>
       <Staff staff={staff} onUpdate={onUpdateStaff} chosenStaff={chosenStaff} setChosenStaff={onUpdateChosenStaff}/>
       <DatePicker

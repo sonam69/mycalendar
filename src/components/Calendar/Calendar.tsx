@@ -2,9 +2,8 @@ import moment from "moment";
 import 'moment/locale/el';
 import './calendar.css';
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import InputColor, { Color } from 'react-input-color';
-import Shift, { IShift } from "../Shift/Shift";
-import Staff, { IStaff } from "../Staff/Staff";
+import { IShift } from "../Shift/Shift";
+import { IStaff } from "../Staff/Staff";
 
 moment.locale('el');
 
@@ -28,6 +27,7 @@ interface IProps {
 // Start should be monday and end should be sunday
 const Calendar = ({defaultProgram, onUpdateDefaultProgram, calendar, shifts, staff, dateRange, chosenStaff, onUpdateCalendar}: IProps) => {
   const [visibleDates, setVisibleDates] = useState<{start?: moment.Moment, end?: moment.Moment}>({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [numberOfVisibleDays, setNumberOfVisibleDays] = useState(7);
 
   const changeVisibleDates = useCallback((action: 'add' | 'substract', days: number) => () => {
@@ -175,7 +175,7 @@ const saveBasic = useCallback(() => {
           <div className="calendar_header">
               {numberOfVisibleDaysArray.map((x, index) => 
                 <div key={index} className="cell">
-                  {visibleDates.start?.clone().add(index, 'days').format('DD/MMM')}
+                  <span>{visibleDates.start?.clone().add(index, 'days').format('DD/MMM')}</span>
                   <div>{visibleDates.start?.clone().add(index, 'days').format('dddd')}</div>
                 </div>
               )}
