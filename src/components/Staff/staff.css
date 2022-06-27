@@ -1,20 +1,58 @@
 .staff_wrapper {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
 
 .staff {
   display: flex;
   align-items: center;
-  border: 2px solid black;
   color: black;
-  padding-right: 30px;
   position: relative; 
   margin: 0 10px 10px 10px;
+  border: 1px solid black;
   border-radius: 8px;
   cursor: pointer;
+  position: relative;
+  padding: 4px;
+
 }
 .staff-dark {color: white;}
+.staff.chosen {border-color:darkorange;}
+
+/* .staff:before {
+  content: "";
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  position: absolute;
+  left: -1px; top: -1px;
+  border: 1px solid black;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.staff.chosen::before {
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  left: -2px; top: -2px;
+  border: 2px solid orangered;
+} */
+
+/* .staff::before {
+  content: "";
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  position: absolute;
+  left: -6px; top: -6px;
+  background: green;
+  z-index: -2;
+  opacity: 0;
+  background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+}
+.staff.chosen::before,
+.staff:hover::before {
+  animation: fadeInAndOut 1.5s linear infinite;
+} */
 
 .staff * {color: inherit;}
 
@@ -34,7 +72,7 @@
 .staff_remove {
   padding: 8px;
   position: absolute;
-  top: 4px; right: 4px;
+  top: 8px; right: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -62,6 +100,7 @@
   background: url(../../../public/colorpicker.png) center no-repeat;
   background-size: contain;
   cursor: pointer;
+  margin-right: 30px;
   transition: transform 0.3s ease;
 }
 .staff_color .colorpicker-toggle:hover {

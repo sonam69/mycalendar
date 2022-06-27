@@ -1,6 +1,6 @@
 import moment from "moment";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Select, { ActionMeta, GroupBase, SingleValue } from 'react-select';
+import React, { useCallback, useState } from "react";
+import Select, { SingleValue } from 'react-select';
 import { uid } from 'uid';
 
 import './shift.css';
@@ -28,8 +28,6 @@ while (i < 24) {
     );
   i++;
 }
-
-// const timeFormat = "YYYY-MM-DD HH:mm:ss";
 
 const shiftsOverlap = (shifts: IShift[]) => {
   const currentDate = moment(new Date());

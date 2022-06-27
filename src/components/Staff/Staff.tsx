@@ -87,8 +87,9 @@ const Staff = ({staff, onUpdate, chosenStaff, setChosenStaff}: IProps) => {
   // Close color picker when click happens outside of component
   useEffect(() => {
     document.addEventListener('click', (e) => {
-      const event = e as unknown as {path: HTMLElement[]};
-      if (!event.path.find((x) => x.className === 'chrome-picker ' || x.className === 'colorpicker-toggle' )) {
+      // const event = e as unknown as {path: HTMLElement[]};
+      const path = (e as unknown as {path: HTMLElement[]}).path || (e.composedPath && e.composedPath());
+      if (!path.find((x) => x.className === 'chrome-picker ' || x.className === 'colorpicker-toggle' )) {
         setVisiblePicker(undefined);
       }
     });
@@ -98,10 +99,10 @@ const Staff = ({staff, onUpdate, chosenStaff, setChosenStaff}: IProps) => {
       <div className="staff_wrapper">
         {staff.map( (staff, index) => 
         <div 
-          className={`staff ${isLight(staff.color) ? "" : "staff-dark"}`}
+          className={`staff ${isLight(staff.color) ? "" : "staff-dark"} ${chosenStaff === staff.id ? "chosen" : ""}`}
           key={index}
           onClick={onChooseStaff(staff.id)}
-          style={{background: staff.color, borderColor: chosenStaff === staff.id ? 'green' : ''}}
+          style={{background: staff.color}}
         >
           <input 
           name="name" 

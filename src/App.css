@@ -4,9 +4,12 @@
   }
 
   .calendar {
+    margin-top: 160px;
     justify-content: center;
   }
 }
+
+.App {overflow: hidden;}
 
 *,
 *::before,
@@ -45,4 +48,9 @@
 }
 .btn:not([disabled]):hover {
   box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%), -0.125rem -0.125rem 1rem rgb(239 71 101 / 50%), 0.125rem 0.125rem 1rem rgb(255 154 90 / 50%);
+}
+
+@keyframes fadeInAndOut {
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
 }
