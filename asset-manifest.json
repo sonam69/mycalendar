@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/mycalendar/static/css/main.c189edf3.css",
+    "main.js": "/mycalendar/static/js/main.2afa22fd.js",
+    "static/media/colorpicker.png": "/mycalendar/static/media/colorpicker.6889e80aebcddab8d557.png",
+    "index.html": "/mycalendar/index.html",
+    "main.c189edf3.css.map": "/mycalendar/static/css/main.c189edf3.css.map",
+    "main.2afa22fd.js.map": "/mycalendar/static/js/main.2afa22fd.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c189edf3.css",
+    "static/js/main.2afa22fd.js"
+  ]
+}
