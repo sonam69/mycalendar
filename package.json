@@ -1,5 +1,6 @@
 {
-  "name": "app-name",
+  "homepage": "http://sonam69.github.io/mycalendar",
+  "name": "mycalendar",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,6 +25,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -53,6 +56,7 @@
     "@types/react-date-range": "^1.4.3",
     "@types/react-datepicker": "^4.4.1",
     "@types/react-dom": "^18.0.4",
-    "@types/react-time-picker": "^4.0.2"
+    "@types/react-time-picker": "^4.0.2",
+    "gh-pages": "^6.1.1"
   }
 }
