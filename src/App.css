@@ -1,6 +1,7 @@
 @media print {
-  .App > *:not(.calendar) {
-     display: none;
+  .App > *:not(.calendar),
+  .App .react-datepicker {
+    display: none;
   }
 
   .calendar {
@@ -9,7 +10,9 @@
   }
 }
 
-.App {overflow: hidden;}
+.App {
+  overflow: hidden;
+}
 
 *,
 *::before,
@@ -17,17 +20,23 @@
   box-sizing: border-box;
 }
 
-.error {color: red; margin-bottom: 10px;}
-.error:empty {display: none;}
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+.error:empty {
+  display: none;
+}
 
 .btn {
-  background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
   border: 0;
   border-radius: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 2.5;
@@ -35,7 +44,7 @@
   padding: 0 1rem;
   text-align: center;
   text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -47,10 +56,17 @@
   opacity: 0.5;
 }
 .btn:not([disabled]):hover {
-  box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%), -0.125rem -0.125rem 1rem rgb(239 71 101 / 50%), 0.125rem 0.125rem 1rem rgb(255 154 90 / 50%);
+  box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%),
+    -0.125rem -0.125rem 1rem rgb(239 71 101 / 50%),
+    0.125rem 0.125rem 1rem rgb(255 154 90 / 50%);
 }
 
 @keyframes fadeInAndOut {
-  0%,100% { opacity: 0; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
